@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const connectDB = require("./config/connectDB");
 const bookRouter = require("./routes/bookRoutes");
+const studentRouter = require("./routes/studentRoutes");
 
 dotenv.config();
 
@@ -18,8 +19,12 @@ app.use(cors({
 // Connecting to mongo database
 connectDB();
 
+// student routes (router)
+app.use("/student-api", studentRouter);
+
 // book routes (router)
-app.use("/api", bookRouter);
+app.use("/book-api", bookRouter);
+
 
 // Home Route
 app.get("/", (req,res) => {

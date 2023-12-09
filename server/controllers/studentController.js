@@ -1,4 +1,7 @@
+const Book = require("../models/student");
 const Student = require("../models/student");
+
+const matchBookStudent = require("../utils/matchBooks");
 
 // Student login
 const login = async (req,res) => {
@@ -59,6 +62,41 @@ const addTraits = async (req,res) => {
     }
 
     const studentDetails = req.session.student;
+
+    const studentOptions = {
+        personality : studentDetails.criteria.personality, 
+        genrePref : studentDetails.criteria.genrePref, 
+        readFreq : studentDetails.criteria.readFreq, 
+        vocab : studentDetails.criteria.vocabulary, 
+        goal : goal, 
+        favQuote : favQuote
+    }
+
+    const allBooks = await Book.find();
+    const matchedBooks = [];
+
+    allBooks.forEach((book) => {
+
+        const bookOptions = {
+            genre: book.criteria.genre,
+            popularity: book.criteria.popularity,
+            length: book.criteria.length,
+            complexity: book.criteria.complexity
+        }
+
+        const score = matchBookStudent(studentOptions, bookOptions);
+
+        if(score > 0){
+            matchedBooks.push();
+        }
+    });
+
+    return res.send({
+        "success": true,
+        "error_code": 200,
+        "message": "Fetched all recommended books",
+        "data": matchedBooks
+    });
 };
 
 
